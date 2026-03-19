@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美食文化回饋心得</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ad9f85;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>美食訪問回饋心得</h1>
+    </header>
+    <div class="container">
+        <form action="#" method="post">
+            <label for="name">您的姓名：</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">您的電子郵件：</label>
+            <input type="text" id="email" name="email" required>
+            <label for="restaurant">您最心儀的美食名稱：</label>
+            <input type="text" id="restaurant" name="restaurant" required>
+            <label for="feedback">看完這麼多與台灣文化相關的美食 您的心得是：</label>
+            <textarea id="feedback" name="feedback" rows="6" required></textarea>
+            <a href="biaodan11.html" style="display: inline-block; background-color: #a5904d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">提交表單</a>
+    </div>
+</body>
+</html>

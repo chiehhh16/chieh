@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>小遊戲專案</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #7b7196; /* 淡灰背景呼應你的網站 */
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        /* 左邊作品列表 */
+        .work-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .work-list li {
+            background-color: #fff; /* 白色卡片 */
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            border-left: 5px solid #59518F; /* 跟你的網站按鈕色一致 */
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* 輕微陰影 */
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .work-list li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            display: block;
+        }
+
+        .work-list li:hover {
+            background-color: #A8A3D9; /* hover 色呼應藍色 */
+            transform: translateY(-2px); /* 浮起效果 */
+        }
+
+        /* 作品內容區 */
+        .work-content h1 {
+            margin-top: 0;
+            color: #372f7a;
+        }
+
+        .work-content p {
+            line-height: 1.6;
+        }
+
+        .work-content iframe {
+            border: 1px solid #ccc;
+            width: 100%;
+            height: 400px;
+            margin-top: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 15px;
+            background-color: #A8A3D9;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .back-link:hover {
+            background-color: #005fa3;
+        }
+        p{
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- 左邊作品列表（模擬 W3Schools exercise 風格） -->
+        
+
+        <!-- 作品內容 -->
+        <div class="work-content">
+            <h1>一些課堂作業</h1>
+            <p>這是一些JavaScript課堂作業</p>
+
+            <!-- 如果有 demo 可以用 iframe -->
+            <!-- <iframe src="game.html"></iframe> -->
+
+            
+        </div>
+        <ul class="work-list">
+            <li><a href="work2.html" target="_blank">專案一(目前還沒東西)</a></li>
+            <li><a href="work2.html" target="_blank">專案二(目前還沒東西)</a></li>
+            <li><a href="work3.html" target="_blank">專案三(目前還沒東西)</a></li>
+        </ul>
+        <a class="back-link" href="index.html">← 回首頁</a>
+    </div>
+</body>
+</html>
