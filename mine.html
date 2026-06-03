@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026_DLei_</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="mine.js"></script>
+    <!--<link rel="icon" href="163.ico" type="image/x-icon">-->
+</head>
+<body class="bg-gray-400 flex items-center justify-center min-h-screen font-sans select-none">
+<!--bg-gray-400 → 灰色背景
+    flex → 使用 flex 排版
+    justify-center → 水平置中
+    min-h-screen → 高度至少整個螢幕
+    font-sans → 無襯線字體
+    select-none → 不能選取文字-->
+    <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+        <!--p-6 → padding
+        rounded-xl → 圓角
+        shadow-lg → 陰影-->
+        <!-- game top-->
+        <div class="flex justify-between items-center mb-4">
+        <!--m = margin（外距）
+            b = bottom（下方）-->
+            <h1 class="text-lg font-bold text-gray-800">掃地雷</h1>
+            <div id="status" class="text-red-500 font-bold font-mono text-lg">🚩10</div>
+            <!--顯示剩餘旗子-->
+            <button onclick="init()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded transition-colors text-sm font-bold">
+                <!--滑鼠移上去會變深一點-->
+                重設
+            </button>
+        </div>
+        <!-- gameArea-->
+        <div id="board" class="grid grid-cols-10 bg-gray-400 border border-gray-400 gap-[1px]"></div>
+    <!--grid → 使用 grid
+        grid-cols-10 → 10 欄
+        gap-[1px] → 間距 1px-->
+        <!-- info-->
+        <div id="msg" class="mt-4 text-center font-bold h-6 text-gray-800"></div>
+        
+        <script>
+        const SIZE = 10, MINES = 10;
+        let board = [], flags = 0 ,gameOver = false, firstClick = true;
+        //board → 棋盤資料
+        //flags → 插旗數
+        //gameOver → 是否結束
+        //firstClick → 第一次點（通常用來避免第一下踩雷
+        const boardElement = document.getElementById('board');
+        const statusElement = document.getElementById('status');
+        const msgElement = document.getElementById('msg');
+               
+        const colors = ['',
+                        'text-blue-600',
+                        'text-green-600',
+                        'text-red-600',
+                        'text-purple-600',
+                        'text-red-900',
+                        'text-teal-600',
+                        'text-black',
+                        'text-gray-600']
+               
+        function toggleFlag(r,c,cell){//插旗 / 取消旗子
+            if(gameOver||board[r][c].rev)return;//不能操作的情況（直接離開）
+            board[r][c].flag=!board[r][c].flag;
+            cell.innerText=board[r][c].flag?'🚩':'';
+            flags+=board[r][c].flag?1:-1;
+            statusElement.innerHTML=`🚩${MINES-flags}`;
+        }
+       
+        function clickCell(r,c,cell){
+
+    if(gameOver || board[r][c].flag || board[r][c].rev) return;
+
+    // ⭐第一次點
+    if(firstClick){
+        firstClick = false;
+        placeMine(r,c);
+        //board[r][c].mine = false;
+    }
+
+    board[r][c].rev = true;
+    cell.classList.replace('bg-gray-200','bg-white');
+
+    if(board[r][c].mine){
+        cell.innerHTML = '💣';
+        cell.classList.add('bg-red-500');
+        msgElement.innerText = "你有夠可憐 這種簡單的遊戲都過不了💥🥱😤";
+        gameOver = true;
+        return;
+    }
+
+    let mines = getMines(r,c);
+    if(mines > 0){
+        cell.innerText = mines;
+        cell.classList.add(colors[mines]);
+    }else{
+        // 空白擴散
+        for(let i=-1;i<=1;i++){
+            for(let j=-1;j<=1;j++){
+                let nr = r+i;
+                let nc = c+j;
+                if(board[nr]?.[nc] && !board[nr][nc].rev){
+                    clickCell(nr,nc,boardElement.children[nr*SIZE+nc]);
+                }
+            }
+        }
+    }
+
+    checkWin();
+}
+        function placeMine(firstR,firstC){//放地雷
+            let count=0;
+            while(count<MINES){
+                let r=Math.floor(Math.random()*SIZE);
+                let c=Math.floor(Math.random()*SIZE);
+                if(
+    !board[r][c].mine &&
+    (Math.abs(r-firstR) > 1 || Math.abs(c-firstC) > 1)
+){
+                    board[r][c].mine=true;
+                    count++;
+                }
+            }
+        }
+       function getMines(r,c){//傳入一個位置 (r, c) 、這格「周圍8格」有幾顆地雷
+        let count=0;
+        for(let i=-1;i<=1;i++){
+            for(let j=-1;j<=1;j++){
+                if(board[r+i]?.[c+j]?.mine)count++;//?. 是「可選鏈（optional chaining）」
+            }
+        }
+        return count;
+       }
+       function checkWin(){
+        let unrevealed=0;
+        for(let r=0;r<SIZE;r++){
+            for(let c=0;c<SIZE;c++){
+                if(!board[r][c].rev){
+                    unrevealed++;
+                }
+            }
+        }
+        if(unrevealed===MINES&&!gameOver){
+            msgElement.innerHTML="Wow! U R very gooooood";
+            msgElement.className="mt-4 text-center font-boldd text-green-600 h-6";
+            gameOver=true;
+        }
+       }
+        function init(){
+            boardElement.innerHTML = '';
+            board =Array.from({length: SIZE},
+                            ()=>Array.from({length:SIZE},
+                            ()=> ({mine:false,rev:false,flag:false}))
+            )
+            //建立陣列
+            flags = 0;
+            gameOver = false;
+            firstClick = true;
+            statusElement.innerText = `🚩 ${MINES}`;
+            msgElement.innerText = '';//清空訊息
+            for(let r=0;r<SIZE;r++){
+                for(let c=0;c<SIZE;c++){
+                    const cell = document.createElement('div');
+                    //建立格子
+                     cell.className = 'w-8 h-8 sm:w-10 sm:h-10 bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-bold text-lg cursor-pointer transition-colors';  
+                    cell.oncontextmenu = (e) => {
+                        //右鍵事件
+                        e.preventDefault();
+                        //取消預設右鍵選單
+                        toggleFlag(r,c,cell);
+                    };
+                    cell.onclick = () => clickCell(r,c,cell); //呼叫插旗
+                    boardElement.appendChild(cell);
+                }
+            }
+        }
+        init()
+        </script>
+        <a st
+        yle="color: lightblue;" href="work.html">← 上一頁</a>
+    </div>
+</body>
+</html>
